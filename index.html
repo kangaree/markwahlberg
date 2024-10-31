@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark Wahlberg's Schedule</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Full height of the viewport */
+            overflow: hidden; /* Prevent scrolling */
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin: 10px 0; /* Reduced margin for more space */
+        }
+        .schedule {
+            max-width: 400px; /* Set a fixed width for better compactness */
+            height: calc(100vh - 40px); /* Full height minus header and margins */
+            background: white;
+            padding: 10px; /* Reduced padding */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: hidden; /* Prevent vertical scrolling */
+            margin: 0 auto; /* Center the schedule on the page */
+            display: flex;
+            flex-direction: column;
+        }
+        .activity {
+            padding: 5px; /* Reduced padding */
+            border-bottom: 1px solid #ddd;
+            transition: background 0.3s;
+            display: flex;
+            justify-content: space-between; /* Align time and activity */
+            align-items: center; /* Center items vertically */
+            font-size: 14px; /* Reduced font size */
+            flex: 1; /* Allow items to grow and fill the space */
+        }
+        .current-activity {
+            background-color: #007BFF;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="schedule">
+        <h1>Mark Wahlberg's Daily Schedule</h1>
+        <div id="scheduleList"></div>
+    </div>
+
+    <script>
+        const schedule = [
+            { time: '2:30', activity: 'Wake up' },
+            { time: '2:45', activity: 'Prayer time' },
+            { time: '3:15', activity: 'Breakfast' },
+            { time: '3:40', activity: 'Workout' },
+            { time: '5:15', activity: 'Post-workout meal' },
+            { time: '6:00', activity: 'Shower' },
+            { time: '7:30', activity: 'Golf' },
+            { time: '8:00', activity: 'Snack' },
+            { time: '9:30', activity: 'Cryo chamber recovery' },
+            { time: '10:30', activity: 'Snack' },
+            { time: '11:00', activity: 'Family time, meetings, and work calls' },
+            { time: '13:00', activity: 'Lunch' },
+            { time: '14:00', activity: 'Meetings and work calls' },
+            { time: '15:00', activity: 'Pick up kids from school' },
+            { time: '15:30', activity: 'Snack' },
+            { time: '16:00', activity: 'Second workout' },
+            { time: '17:00', activity: 'Shower' },
+            { time: '17:30', activity: 'Dinner and family time' },
+            { time: '19:30', activity: 'Bedtime' }
+        ];
+
+        function getCurrentActivity() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const currentTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+
+            let currentActivity = "Sleeping"; // Default if time is beyond the schedule
+            schedule.forEach((item, index) => {
+                const nextTime = schedule[index + 1] ? schedule[index + 1].time : '24:00';
+                if (currentTime >= item.time && currentTime < nextTime) {
+                    currentActivity = item.activity;
+                }
+            });
+            return currentActivity;
+        }
+
+        function displaySchedule() {
+            const scheduleList = document.getElementById('scheduleList');
+            const currentActivity = getCurrentActivity();
+
+            schedule.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'activity';
+                if (item.activity === currentActivity) {
+                    div.classList.add('current-activity');
+                }
+                div.innerHTML = `<span>${item.time}</span><span>${item.activity}</span>`;
+                scheduleList.appendChild(div);
+            });
+        }
+
+        displaySchedule();
+    </script>
+</body>
+</html>
